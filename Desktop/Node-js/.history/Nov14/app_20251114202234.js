@@ -40,7 +40,7 @@ console.log(__dirname);
     if(err)console.log("error",err);
 console.log(path);
 console.log(path);
-const wangela= "Yohn 3:16";
+const wangela= Yohn 3:16;
 console.log(wangela);
 })
 readFile('./abebe.txt','utf8',(err,data)=>

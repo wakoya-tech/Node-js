@@ -47,14 +47,4 @@ server2.listen(6001, function(){
 const http = require("http");
 const server2=http.createServer((req)=>{
     console.log(req.url);
-    if(req.url === "/"){
-        res.write["<h1>This is home page</h1>"]
-    }
-    else  if(req.url === "/about"){
-        res.write["<h1>This is home page</h1>"]
-    }
-
-});
-server2.listen(6001,function(){
-    console.log("it is listening");
 })

@@ -1,4 +1,4 @@
-/*const http = require("http");
+const http = require("http");
 const url = require("url");
 
 const server = http.createServer(function(req, res) {
@@ -23,7 +23,7 @@ const server = http.createServer(function(req, res) {
 server.listen(5000, function() {
     console.log("Server is running on port 5000");
 });
-*/
+
 /*console.log("server is running on port 7897");
 /*const http = require("http");
 const server2 = http.createServer((req, res) => {
@@ -44,17 +44,3 @@ const server2 = http.createServer((req, res) => {
 server2.listen(6001, function(){
     console.log("it is listening");
 })*/
-const http = require("http");
-const server2=http.createServer((req)=>{
-    console.log(req.url);
-    if(req.url === "/"){
-        res.write["<h1>This is home page</h1>"]
-    }
-    else  if(req.url === "/about"){
-        res.write["<h1>This is home page</h1>"]
-    }
-
-});
-server2.listen(6001,function(){
-    console.log("it is listening");
-})

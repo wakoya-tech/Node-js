@@ -1,4 +1,4 @@
-/*const http = require("http");
+const http = require("http");
 const url = require("url");
 
 const server = http.createServer(function(req, res) {
@@ -7,10 +7,10 @@ const server = http.createServer(function(req, res) {
     const parsedUrl = url.parse(req.url, true);
     let filePath = parsedUrl.pathname;
     console.log(filePath);
-    console.log(__dirname);
-    console.log(__filename);
 
     if (filePath === "/abebe.html") {
+        console.log(__dirname);
+        console.log(__filename);
         res.write("Hello Abebe");
         res.end();
     } else {
@@ -18,12 +18,13 @@ const server = http.createServer(function(req, res) {
         res.write("\nHello World");
         res.end("\nOtuma mortuun mortuu hortuun horti");
     }
-}); // <-- make sure nothing extra here
-
-server.listen(5000, function() {
-    console.log("Server is running on port 5000");
 });
-*/
+
+server.listen(7000, function() {
+    console.log("Server is running on port 7000");
+});
+
+
 /*console.log("server is running on port 7897");
 /*const http = require("http");
 const server2 = http.createServer((req, res) => {
@@ -44,17 +45,3 @@ const server2 = http.createServer((req, res) => {
 server2.listen(6001, function(){
     console.log("it is listening");
 })*/
-const http = require("http");
-const server2=http.createServer((req)=>{
-    console.log(req.url);
-    if(req.url === "/"){
-        res.write["<h1>This is home page</h1>"]
-    }
-    else  if(req.url === "/about"){
-        res.write["<h1>This is home page</h1>"]
-    }
-
-});
-server2.listen(6001,function(){
-    console.log("it is listening");
-})

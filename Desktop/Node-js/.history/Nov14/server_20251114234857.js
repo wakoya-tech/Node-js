@@ -1,0 +1,44 @@
+const http = require("http");
+const url = require("url");   // FIXED: correct URL module
+
+const server = http.createServer(function(req, res) {
+    console.log("request received");
+
+    // Parse URL BEFORE sending response
+    const parsedUrl = url.parse(req.url, true);
+   // console.log(parsedUrl);
+let filePath = parsedUrl.path;
+console.log(filePath);
+  if(filePath=="/abebe.html"){
+    res.write("Hello Abebe");
+  }  else{
+    res.write("Dadhabiin koo galaafi wanta keessa darbuu guyyaa guyyaa ");
+    res.write("\nHello World");
+    res.end("\nOtuma mortuun mortuu hortuun horti");
+}});
+
+
+server.listen(5000, function() {
+    console.log("Server is running on port 5000");
+});
+
+/*console.log("server is running on port 7897");
+/*const http = require("http");
+const server2 = http.createServer((req, res) => {
+    console.log(req.url); // Added 'req.' before url
+    if(req.url === "/"){
+        res.write("<h1>This is home page</h1>")
+        res.end();
+    }
+    else if(req.url === "/about"){
+        res.write("<h1>This is about page</h1>")
+        res.end();
+    }
+    else{
+        res.write("<h1>page not found</h1>")
+        res.end();
+    }
+});
+server2.listen(6001, function(){
+    console.log("it is listening");
+})*/

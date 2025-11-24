@@ -54,7 +54,4 @@ const server2=http.createServer((req)=>{
         res.write["<h1>This is home page</h1>"]
     }
 
-});
-server2.listen(6001,function(){
-    console.log("it is listening");
 })
