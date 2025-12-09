@@ -1,6 +1,5 @@
-
-<?php
 /*
+<?php
 $name = "Wako";
 $food = "pizza";
 $email = "fake@gmail.com";
@@ -28,19 +27,5 @@ echo "you have orderd {$quantity} X {$food}s<br>";
 
 $total = $quantity * $price;
 echo "your total is: \${$total}";
-*/
-$x = 20;
-$y = 30;
-$z = 50;
-$pro = $x * $y * $z;
-$add = $x + $y + $z;
-$sub = $x - $y - $z;
-$div = $x / $y;
-echo "the addition x,y and z is :{$add} <br>";
-echo "the subtraction x,y,z is :{$sub} <br>";
-echo "the production of x,y and z is :{$pro} <br>";
-echo "the division of x/y is :{$div}<br>";
-//echo $z;
-echo $x % $y;
 ?>
-
+*/

@@ -40,7 +40,7 @@ echo "the addition x,y and z is :{$add} <br>";
 echo "the subtraction x,y,z is :{$sub} <br>";
 echo "the production of x,y and z is :{$pro} <br>";
 echo "the division of x/y is :{$div}<br>";
-//echo $z;
-echo $x % $y;
+echo $z;
+echo $x ** $y;
 ?>
 
