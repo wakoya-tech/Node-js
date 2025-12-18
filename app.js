@@ -22,7 +22,7 @@ const start = async () => {
         // This will cause an error (file does not exist)
         const third = await getText('./content/frist.txt0')
         console.log(third)
-console.log("what");
+
     } catch (error) {
         console.log(error)
        
