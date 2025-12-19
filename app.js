@@ -1,32 +1,21 @@
-const { readFile } = require('fs')
+const { readFile, writeFile } = require('fs')
+const util=require('util')
+const readFilePromise=util.promisify(readFile)
+const writeFilePromise=util.promisify(writeFile)
 
-const getText = (path) => {
-    return new Promise((resolve, reject) => {
-        readFile(path, 'utf8', (err, data) => {
-            if (err) {
-                reject(err)
-            } else {
-                resolve(data)
-            }
-        })
-    })
-}
-
-const start = async () => {
+const start= async ()=>{
     try {
-        const first = await getText('./content/frist.txt')
-        const second = await getText('./content/frist.txt')
+        const first = await readFilePromise('./content/frist.txt','utf8')
+        const second = await readFilePromise('./content/second.txt','utf8')
+await writeFilePromise('./content/result=mind-grenade.txt',`THIS IS AWESOME:${first},${second}`)
 
-        console.log(first, second)
 
-        // This will cause an error (file does not exist)
-        const third = await getText('./content/frist.txt0')
-        console.log(third)
-
-    } catch (error) {
+console.log(first,second);
+    } 
+    catch (error) {
         console.log(error)
-       
     }
 }
+
 
 start()
