@@ -5,3 +5,4 @@ console.log(frist,second);
 writeFileSync('./content/result-sync.txt',
     `Here is the result:${frist},${second}`,
 {flag:'a'})
+console.log("done with this task");

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Charades - Number Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+        }
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4">
+
+    <!-- Header -->
+    <header class="w-full max-w-md text-center mb-6 mt-4">
+        <h1 class="text-3xl font-bold text-indigo-800">Bible Charades</h1>
+        <p class="text-gray-600">Search by Card Number</p>
+    </header>
+
+    <!-- Number Search Input -->
+    <div class="w-full max-w-md mb-6 bg-white p-4 rounded-xl shadow-md border-2 border-indigo-500">
+        <label for="cardNumberInput" class="block text-sm font-bold text-indigo-900 uppercase mb-2">Enter Card Number (1-30)</label>
+        <div class="flex gap-2">
+            <input type="number" id="cardNumberInput" placeholder="e.g. 7" 
+                   class="flex-1 border-2 border-gray-200 rounded-lg px-4 py-2 focus:border-indigo-500 outline-none text-xl font-bold">
+            <button onclick="searchCard()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                Search
+            </button>
+        </div>
+    </div>
+
+    <!-- Group Selection -->
+    <div class="w-full max-w-md mb-6 bg-white p-4 rounded-xl shadow-sm border border-indigo-100">
+        <p class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Current Group</p>
+        <div class="grid grid-cols-4 gap-2" id="groupGrid">
+            <!-- Group buttons injected here -->
+        </div>
+    </div>
+
+    <!-- Timer -->
+    <div class="w-full max-w-md bg-indigo-900 text-white p-4 rounded-xl mb-6 flex items-center justify-between shadow-lg">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">⏱️</span>
+            <span id="timerDisplay" class="text-3xl font-mono font-bold">01:00</span>
+        </div>
+        <div class="flex gap-2">
+            <button id="startBtn" onclick="toggleTimer()" class="bg-white text-indigo-900 px-4 py-2 rounded-lg font-bold hover:bg-indigo-100 transition">Start</button>
+            <button onclick="resetTimer()" class="bg-indigo-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-600 transition">Reset</button>
+        </div>
+    </div>
+
+    <!-- Game Card Area -->
+    <div id="gameCard" class="relative w-full max-w-sm h-64 perspective-1000 cursor-pointer mb-6" onclick="flipCard()">
+        <div id="cardInner" class="card-inner relative w-full h-full shadow-xl rounded-2xl">
+            <!-- Front of Card (Prompt) -->
+            <div class="card-front bg-indigo-600 rounded-2xl flex flex-col items-center justify-center text-white p-6 text-center">
+                <span id="cardNumberDisplay" class="absolute top-4 left-4 bg-white/20 px-3 py-1 rounded-full text-xs font-bold"># --</span>
+                <span class="text-5xl mb-4">📖</span>
+                <p class="text-xl font-bold uppercase tracking-widest">Tap to Reveal Question</p>
+                <p class="mt-2 opacity-80" id="tapInstruction">Waiting for card number...</p>
+            </div>
+            <!-- Back of Card (Answer) -->
+            <div class="card-back bg-white border-4 border-indigo-600 rounded-2xl flex flex-col items-center justify-center p-6 text-center">
+                <span id="categoryLabel" class="text-indigo-600 font-bold text-xs uppercase tracking-widest mb-2 px-3 py-1 bg-indigo-50 rounded-full">Category</span>
+                <h2 id="promptText" class="text-3xl font-bold text-gray-800 leading-tight">Prompt</h2>
+                <div class="mt-4 flex gap-1" id="difficultyStars">
+                    <!-- Stars injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reference List Toggle -->
+    <button onclick="toggleMasterList()" class="text-indigo-600 text-sm font-semibold underline mb-4">View All Card Numbers (Master List)</button>
+    
+    <div id="masterList" class="w-full max-w-md bg-white rounded-xl shadow-inner p-4 mb-10 hidden border">
+        <h3 class="font-bold mb-4 text-gray-800">Card Reference List</h3>
+        <div class="grid grid-cols-1 gap-1 text-sm overflow-y-auto max-h-60" id="fullListContent">
+            <!-- Full list injected here -->
+        </div>
+    </div>
+
+    <script>
+        const prompts = [
+            { id: 1, name: "Musee", category: "Character", difficulty: 1 },
+            { id: 2, name: "Iyaasuu", category: "Character", difficulty: 1 },
+            { id: 3, name: "Dawit fi Goliyaad", category: "Story", difficulty: 1 },
+            { id: 4, name: "Matusaaleem", category: "Story", difficulty: 1 },
+            { id: 5, name: "Henook", category: "Character", difficulty: 1 },
+            { id: 6, name: "Baabilon", category: "Character", difficulty: 1 },
+            { id: 7, name: "Faasikaa", category: "Character", difficulty: 2 },
+            { id: 8, name: "Galaana Diimaa", category: "Character", difficulty: 2 },
+            { id: 9, name: "Abboommii kurnan", category: "Character", difficulty: 2 },
+            { id: 10, name: "Gibxii", category: "Character", difficulty: 2 },
+            { id: 11, name: "Israa'el", category: "Miracle", difficulty: 2 },
+            { id: 12, name: "Nebukadnezaar", category: "Miracle", difficulty: 1 },
+            { id: 13, name: "Esaawuu", category: "Event", difficulty: 2 },
+            { id: 14, name: "Maariyaam Hadha goofta", category: "Story", difficulty: 2 },
+            { id: 15, name: "Zakaariyaas", category: "Miracle", difficulty: 2 },
+            { id: 16, name: "Alaazaar", category: "Story", difficulty: 2 },
+            { id: 17, name: "Deemaas", category: "Miracle", difficulty: 2 },
+            { id: 18, name: "Barxiimewos Isa Jaamaa", category: "Story", difficulty: 1 },
+            { id: 19, name: "Philaaxos", category: "Story", difficulty: 1 },
+            { id: 20, name: "Isxifaanos", category: "Event", difficulty: 2 },
+            { id: 21, name: "Zakewos", category: "Parable", difficulty: 3 },
+            { id: 22, name: "Liidiyaa", category: "Parable", difficulty: 3 },
+            { id: 23, name: "Du'aa ka'uu", category: "Story", difficulty: 3 },
+            { id: 24, name: "Fannoo", category: "Concept", difficulty: 3 },
+            { id: 25, name: "Phexros", category: "Prophecy", difficulty: 3 },
+            { id: 26, name: "Shaadraak, Meshaakii fi Abed-Neegoo", category: "Event", difficulty: 3 },
+            { id: 27, name: "Elsaabex", category: "Story", difficulty: 3 },
+            { id: 28, name: "Maartaa Fi Maariyaam", category: "Event", difficulty: 3 },
+            { id: 29, name: "Yordaanos", category: "Event", difficulty: 2 },
+            { id: 30, name: "Yerikoo", category: "Miracle", difficulty: 2 }
+        ];
+
+        let timeLeft = 60;
+        let timerInterval = null;
+        let isFlipped = false;
+        let activeGroup = 1;
+
+        function initGroups() {
+            const grid = document.getElementById('groupGrid');
+            for (let i = 1; i <= 8; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = `G${i}`;
+                btn.id = `group-btn-${i}`;
+                btn.className = `py-2 rounded-lg font-bold border transition-all ${i === 1 ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-gray-50 text-gray-600 border-gray-200'}`;
+                btn.onclick = () => selectGroup(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function selectGroup(num) {
+            document.getElementById(`group-btn-${activeGroup}`).className = 'py-2 rounded-lg font-bold border transition-all bg-gray-50 text-gray-600 border-gray-200';
+            activeGroup = num;
+            document.getElementById(`group-btn-${activeGroup}`).className = 'py-2 rounded-lg font-bold border transition-all bg-indigo-600 text-white border-indigo-600';
+            resetTimer();
+        }
+
+        function searchCard() {
+            const num = parseInt(document.getElementById('cardNumberInput').value);
+            const found = prompts.find(p => p.id === num);
+            
+            if (found) {
+                displayCard(found);
+                document.getElementById('cardNumberInput').value = ''; // clear input
+                resetTimer();
+                toggleTimer(); // Auto start timer for the group
+            } else {
+                alert("Please enter a valid number between 1 and 30.");
+            }
+        }
+
+        function displayCard(cardData) {
+            isFlipped = false;
+            document.getElementById('cardInner').classList.remove('flipped');
+            
+            setTimeout(() => {
+                document.getElementById('cardNumberDisplay').innerText = `# ${cardData.id}`;
+                document.getElementById('tapInstruction').innerText = "Card #" + cardData.id + " loaded. Tap to reveal.";
+                document.getElementById('promptText').innerText = cardData.name;
+                document.getElementById('categoryLabel').innerText = cardData.category;
+                
+                const starsContainer = document.getElementById('difficultyStars');
+                starsContainer.innerHTML = '';
+                for(let i=0; i<3; i++) {
+                    const star = document.createElement('span');
+                    star.innerText = '⭐';
+                    star.style.opacity = i < cardData.difficulty ? '1' : '0.2';
+                    starsContainer.appendChild(star);
+                }
+            }, 150);
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('startBtn');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.innerText = "Resume";
+            } else {
+                btn.innerText = "Pause";
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        btn.innerText = "Time Up!";
+                        playBeep();
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeLeft = 60;
+            updateTimerDisplay();
+            document.getElementById('startBtn').innerText = "Start";
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+        }
+
+        function playBeep() {
+            const display = document.getElementById('timerDisplay');
+            display.classList.add('text-red-500', 'animate-pulse');
+            setTimeout(() => display.classList.remove('text-red-500', 'animate-pulse'), 3000);
+        }
+
+        function toggleMasterList() {
+            const list = document.getElementById('masterList');
+            list.classList.toggle('hidden');
+            if(!list.classList.contains('hidden')) {
+                const content = document.getElementById('fullListContent');
+                content.innerHTML = prompts.map(p => `
+                    <div class="flex justify-between border-b py-1">
+                        <span><strong>#${p.id}</strong> ${p.name}</span>
+                        <span class="text-xs text-gray-400">${p.category}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Initialize
+        window.onload = () => {
+            initGroups();
+        };
+
+        // Allow Enter key to search
+        document.getElementById('cardNumberInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchCard();
+            }
+        });
+    </script>
+</body>
+</html>
