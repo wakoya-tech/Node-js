@@ -1,0 +1,67 @@
+
+  
+  /* NAVBAR BASIC STYLING */
+ nav{
+    color: #f7f5f5;
+    background: blue;
+ }
+  
+  .nav-center {
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* REQUIRED for responsiveness */
+  
+}
+.nav-center-1{
+    padding-right: 20em;
+  color: aliceblue;
+}
+.nav-center-1 a{
+    padding: 10px;
+    color: aliceblue;
+
+}
+.nav-center h5{
+    padding-left: 20em;
+
+}
+
+
+  .form{
+    display: inline-table;
+    justify-content: center;
+    align-items: center;
+    align-items: center;
+   padding: 30px;
+    flex-wrap: wrap;
+    border: rgb(179, 168, 158) solid 3px;
+     margin: 10em 10em 20em 30em;
+     width: 500px;
+}
+
+input{
+margin-bottom: 10px;
+    width: 500px;
+}
+button{
+    color: blue;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+}
+@media screen and (min-width: 768px) {
+    .block {
+      display: none;
+    }
+  
+    .nav-center-1 {
+      height: auto;           /* FIX */
+      display: flex;          /* FIX */
+      gap: 1.5rem;
+      width: auto;
+    }
+  }

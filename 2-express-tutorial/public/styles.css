@@ -1,0 +1,93 @@
+*{
+    background: #ecedf0;
+  }
+  
+  /* NAVBAR BASIC STYLING */
+  nav {
+    background: #f7f7f7;
+    color: #050101;
+    padding: 1rem;
+  }
+  
+  .nav-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* REQUIRED for responsiveness */
+  }
+  
+  .nav-header img {
+    width: 50px;
+  }
+  
+  
+  .nav-header{
+    margin-left: 50px;
+  }
+  
+  .nav-toggle {
+    background: transparent;
+    border: none;
+    color: #291313;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* NAV LINKS — MOBILE DEFAULT (HIDDEN) */
+  .links {
+    width: 100%;
+    height: 0;                /* FIX */
+    overflow: hidden;         /* FIX */
+    list-style: none;
+    transition: height 0.3s ease;
+   
+    
+  }
+  
+  /* SHOW LINKS (JS TOGGLE) */
+  .show-links {
+    height: 120px; /* FIX — adjust if needed */
+  }
+  
+  .links a {
+    color: #1d1414;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .links a:hover {
+    color: #f0a500;
+  }
+  
+  /* SOCIAL ICONS */
+  .social-icons {
+    display: -webkit-flex;
+    list-style: none;
+    gap: 1rem;
+    margin-right: 50px;
+  }
+  
+  .social-icons a {
+    color: #5483da;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+  
+  .social-icons a:hover {
+    color: #3d2f0f;
+  }
+  
+  /* DESKTOP VIEW */
+  @media screen and (min-width: 768px) {
+    .nav-toggle {
+      display: none;
+    }
+  
+    .links {
+      height: auto;           /* FIX */
+      display: flex;          /* FIX */
+      gap: 1.5rem;
+      width: auto;
+    }
+  }
+  
