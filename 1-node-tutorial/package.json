@@ -1,0 +1,29 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/wakoya-tech/Node-js#readme",
+  "bugs": {
+    "url": "https://github.com/wakoya-tech/Node-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wakoya-tech/Node-js.git"
+  },
+  "license": "ISC",
+  "author": "wakoya",
+  "type": "commonjs",
+  "main": "1-into.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  },
+  "keywords": []
+}
